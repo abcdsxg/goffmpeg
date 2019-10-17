@@ -21,42 +21,42 @@ type Mediafile struct {
 	maxKeyframe           int
 	minKeyframe           int
 	keyframeInterval      int
-	audioCodec            string
-	audioBitrate          string
-	audioChannels         int
-	bufferSize            int
-	threads               int
-	preset                string
-	tune                  string
-	audioProfile          string
-	videoProfile          string
-	target                string
-	duration              string
-	durationInput         string
-	seekTime              string
-	quality               int
-	strict                int
-	muxDelay              string
-	seekUsingTsInput      bool
-	seekTimeInput         string
-	inputPath             string
-	hideBanner            bool
-	outputPath            string
-	outputFormat          string
-	copyTs                bool
-	nativeFramerateInput  bool
-	inputInitialOffset    string
-	rtmpLive              string
-	hlsPlaylistType       string
-	hlsListSize           int
-	hlsSegmentDuration    int
-	httpMethod            string
-	httpKeepAlive         bool
-	streamIds             map[int]string
-	metadata              Metadata
-	videoFilter           string
-	audioFilter           string
-	skipVideo             bool
+	audioCodec           string
+	audioBitrate         string
+	audioChannels        int
+	bufferSize           int
+	threads              int
+	preset               string
+	tune                 string
+	audioProfile         string
+	videoProfile         string
+	target               string
+	duration             string
+	durationInput        string
+	seekTime             string
+	quality              int
+	strict               int
+	muxDelay             string
+	seekUsingTsInput     bool
+	seekTimeInput        string
+	inputPaths           []string
+	hideBanner           bool
+	outputPath           string
+	outputFormat         string
+	copyTs               bool
+	nativeFramerateInput bool
+	inputInitialOffset   string
+	rtmpLive             string
+	hlsPlaylistType      string
+	hlsListSize          int
+	hlsSegmentDuration   int
+	httpMethod           string
+	httpKeepAlive        bool
+	streamIds            map[int]string
+	metadata             Metadata
+	videoFilter          string
+	audioFilter          string
+	skipVideo            bool
 	skipAudio             bool
 }
 
@@ -194,8 +194,8 @@ func (m *Mediafile) SetCopyTs(val bool) {
 	m.copyTs = val
 }
 
-func (m *Mediafile) SetInputPath(val string) {
-	m.inputPath = val
+func (m *Mediafile) SetInputPath(val []string) {
+	m.inputPaths = val
 }
 
 func (m *Mediafile) SetHideBanner(val bool) {
@@ -405,8 +405,8 @@ func (m *Mediafile) CopyTs() bool {
 	return m.copyTs
 }
 
-func (m *Mediafile) InputPath() string {
-	return m.inputPath
+func (m *Mediafile) InputPath() []string {
+	return m.inputPaths
 }
 
 func (m *Mediafile) HideBanner() bool {
@@ -569,7 +569,15 @@ func (m *Mediafile) ObtainAspect() []string {
 }
 
 func (m *Mediafile) ObtainInputPath() []string {
-	return []string{"-i", m.inputPath}
+	var paths []string
+	for _,inputPath:=range m.inputPaths{
+		if inputPath==""{
+			continue
+		}
+		paths=append(paths,"-i")
+		paths=append(paths,inputPath)
+	}
+	return paths
 }
 
 func (m *Mediafile) ObtainHideBanner() []string {

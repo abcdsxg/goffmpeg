@@ -79,7 +79,7 @@ func (t Transcoder) GetCommand() []string {
 }
 
 // Initialize Init the transcoding process
-func (t *Transcoder) Initialize(inputPath string, outputPath string) error {
+func (t *Transcoder) Initialize(inputPaths []string, outputPath string) error {
 	var err error
 	var out bytes.Buffer
 	var Metadata models.Metadata
@@ -93,11 +93,21 @@ func (t *Transcoder) Initialize(inputPath string, outputPath string) error {
 		}
 	}
 
-	if inputPath == "" {
-		return errors.New("error on transcoder.Initialize: inputPath missing")
+	missPathErr:=errors.New("error on transcoder.Initialize: inputPath missing")
+	if len(inputPaths)==0{
+		return  missPathErr
 	}
 
-	command := []string{"-i", inputPath, "-print_format", "json", "-show_format", "-show_streams", "-show_error"}
+	var command []string
+	for _,inputPath:=range inputPaths{
+		if inputPath==""{
+			continue
+		}
+		command=append(command,"-i")
+		command=append(command,inputPath)
+	}
+
+	command =append(command, []string{ "-print_format", "json", "-show_format", "-show_streams", "-show_error"}...)
 
 	cmd := exec.Command(cfg.FfprobeBin, command...)
 	cmd.Stdout = &out
