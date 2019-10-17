@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/xfrr/goffmpeg/transcoder"
+	"github.com/abcdsxg/goffmpeg/transcoder"
 )
 
 func TestInputNotFound(t *testing.T) {
@@ -13,7 +13,7 @@ func TestInputNotFound(t *testing.T) {
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize(inputPath, outputPath)
+	err := trans.Initialize([]string{inputPath}, outputPath)
 	if err != nil {
 		return
 	}
@@ -26,7 +26,7 @@ func TestTranscoding3GP(t *testing.T) {
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize(inputPath, outputPath)
+	err := trans.Initialize([]string{inputPath}, outputPath)
 	if err != nil {
 		t.Error(err)
 		return
@@ -47,7 +47,7 @@ func TestTranscodingAVI(t *testing.T) {
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize(inputPath, outputPath)
+	err := trans.Initialize([]string{inputPath}, outputPath)
 	if err != nil {
 		t.Error(err)
 		return
@@ -68,7 +68,7 @@ func TestTranscodingFLV(t *testing.T) {
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize(inputPath, outputPath)
+	err := trans.Initialize([]string{inputPath}, outputPath)
 	if err != nil {
 		t.Error(err)
 		return
@@ -89,7 +89,7 @@ func TestTranscodingMKV(t *testing.T) {
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize(inputPath, outputPath)
+	err := trans.Initialize([]string{inputPath}, outputPath)
 	if err != nil {
 		t.Error(err)
 		return
@@ -110,7 +110,7 @@ func TestTranscodingMOV(t *testing.T) {
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize(inputPath, outputPath)
+	err := trans.Initialize([]string{inputPath}, outputPath)
 	if err != nil {
 		t.Error(err)
 		return
@@ -131,7 +131,7 @@ func TestTranscodingMPEG(t *testing.T) {
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize(inputPath, outputPath)
+	err := trans.Initialize([]string{inputPath}, outputPath)
 	if err != nil {
 		t.Error(err)
 		return
@@ -152,7 +152,7 @@ func TestTranscodingOGG(t *testing.T) {
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize(inputPath, outputPath)
+	err := trans.Initialize([]string{inputPath}, outputPath)
 	if err != nil {
 		t.Error(err)
 		return
@@ -173,7 +173,7 @@ func TestTranscodingWAV(t *testing.T) {
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize(inputPath, outputPath)
+	err := trans.Initialize([]string{inputPath}, outputPath)
 	if err != nil {
 		t.Error(err)
 		return
@@ -194,7 +194,7 @@ func TestTranscodingWEBM(t *testing.T) {
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize(inputPath, outputPath)
+	err := trans.Initialize([]string{inputPath}, outputPath)
 	if err != nil {
 		t.Error(err)
 		return
@@ -215,7 +215,7 @@ func TestTranscodingWMV(t *testing.T) {
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize(inputPath, outputPath)
+	err := trans.Initialize([]string{inputPath}, outputPath)
 	if err != nil {
 		t.Error(err)
 		return
@@ -236,7 +236,7 @@ func TestTranscodingProgress(t *testing.T) {
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize(inputPath, outputPath)
+	err := trans.Initialize([]string{inputPath}, outputPath)
 	if err != nil {
 		t.Error(err)
 		return

@@ -12,9 +12,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/xfrr/goffmpeg/ffmpeg"
-	"github.com/xfrr/goffmpeg/models"
-	"github.com/xfrr/goffmpeg/utils"
+	"github.com/abcdsxg/goffmpeg/ffmpeg"
+	"github.com/abcdsxg/goffmpeg/models"
+	"github.com/abcdsxg/goffmpeg/utils"
 )
 
 // Transcoder Main struct
@@ -124,7 +124,7 @@ func (t *Transcoder) Initialize(inputPaths []string, outputPath string) error {
 	// Set new Mediafile
 	MediaFile := new(models.Mediafile)
 	MediaFile.SetMetadata(Metadata)
-	MediaFile.SetInputPath(inputPath)
+	MediaFile.SetInputPath(inputPaths)
 	MediaFile.SetOutputPath(outputPath)
 
 	// Set transcoder configuration
