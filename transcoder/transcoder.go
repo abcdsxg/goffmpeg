@@ -82,10 +82,10 @@ func (t Transcoder) GetCommand() []string {
 func (t *Transcoder) Initialize(inputPaths []string, outputPath string) error {
 	var err error
 	var out bytes.Buffer
+	var errBuff bytes.Buffer
 	var Metadata models.Metadata
 
 	cfg := t.configuration
-
 	if len(cfg.FfmpegBin) == 0 || len(cfg.FfprobeBin) == 0 {
 		cfg, err = ffmpeg.Configure()
 		if err != nil {
@@ -98,23 +98,15 @@ func (t *Transcoder) Initialize(inputPaths []string, outputPath string) error {
 		return  missPathErr
 	}
 
-	var command []string
-	for _,inputPath:=range inputPaths{
-		if inputPath==""{
-			continue
-		}
-		command=append(command,"-i")
-		command=append(command,inputPath)
-	}
-
-	command =append(command, []string{ "-print_format", "json", "-show_format", "-show_streams", "-show_error"}...)
+	command := []string{"-i", inputPaths[0], "-print_format", "json", "-show_format", "-show_streams", "-show_error"}
 
 	cmd := exec.Command(cfg.FfprobeBin, command...)
 	cmd.Stdout = &out
+	cmd.Stderr = &errBuff
 
 	err = cmd.Run()
 	if err != nil {
-		return fmt.Errorf("error executing (%s) | error: %s", command, err)
+		return fmt.Errorf("error executing (%s) | error: %s", command, errBuff.String())
 	}
 
 	if err = json.Unmarshal([]byte(out.String()), &Metadata); err != nil {

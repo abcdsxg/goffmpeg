@@ -53,11 +53,13 @@ type Mediafile struct {
 	httpMethod           string
 	httpKeepAlive        bool
 	streamIds            map[int]string
+	mapIds            map[int]string
 	metadata             Metadata
 	videoFilter          string
 	audioFilter          string
 	skipVideo            bool
 	skipAudio             bool
+	shortest             bool
 }
 
 /*** SETTERS ***/
@@ -250,12 +252,21 @@ func (m *Mediafile) SetStreamIds(val map[int]string) {
 	m.streamIds = val
 }
 
+
+func (m *Mediafile) SetMapIds(val map[int]string) {
+	m.mapIds = val
+}
+
 func (m *Mediafile) SetSkipVideo(val bool) {
 	m.skipVideo = val
 }
 
 func (m *Mediafile) SetSkipAudio(val bool) {
 	m.skipAudio = val
+}
+
+func (m *Mediafile) SetShortest(val bool) {
+	m.shortest = val
 }
 
 func (m *Mediafile) SetMetadata(v Metadata) {
@@ -457,12 +468,20 @@ func (m *Mediafile) StreamIds() map[int]string {
 	return m.streamIds
 }
 
+func (m *Mediafile) MapIds() map[int]string {
+	return m.mapIds
+}
+
 func (m *Mediafile) SkipVideo() bool {
 	return m.skipVideo
 }
 
 func (m *Mediafile) SkipAudio() bool {
 	return m.skipAudio
+}
+
+func (m *Mediafile) Shortest() bool {
+	return m.shortest
 }
 
 func (m *Mediafile) Metadata() Metadata {
@@ -500,6 +519,7 @@ func (m *Mediafile) ToStrCommand() []string {
 		"AudioChannels",
 		"AudioProfile",
 		"SkipAudio",
+		"Shortest",
 		"Quality",
 		"Strict",
 		"BufferSize",
@@ -513,6 +533,7 @@ func (m *Mediafile) ToStrCommand() []string {
 		"Duration",
 		"CopyTs",
 		"StreamIds",
+		"MapIds",
 		"OutputFormat",
 		"HlsListSize",
 		"HlsSegmentDuration",
@@ -876,11 +897,31 @@ func (m *Mediafile) ObtainSkipAudio() []string {
 	}
 }
 
+func (m *Mediafile) ObtainShortest() []string {
+	if m.shortest {
+		return []string{"-shortest"}
+	} else {
+		return nil
+	}
+}
+
 func (m *Mediafile) ObtainStreamIds() []string {
 	if m.streamIds != nil && len(m.streamIds) != 0 {
 		result := []string{}
 		for i, val := range m.streamIds {
 			result = append(result, []string{"-streamid", fmt.Sprintf("%d:%s", i, val)}...)
+		}
+		return result
+	}
+	return nil
+}
+
+
+func (m *Mediafile) ObtainMapIds() []string {
+	if m.mapIds != nil && len(m.mapIds) != 0 {
+		result := []string{}
+		for i, val := range m.mapIds {
+			result = append(result, []string{"-map", fmt.Sprintf("%d:%s", i, val)}...)
 		}
 		return result
 	}

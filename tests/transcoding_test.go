@@ -1,6 +1,7 @@
 package test
 
 import (
+	"log"
 	"testing"
 
 	"github.com/abcdsxg/goffmpeg/transcoder"
@@ -8,14 +9,35 @@ import (
 
 func TestInputNotFound(t *testing.T) {
 
-	var inputPath = "/data/testmkv"
-	var outputPath = "/data/testmp4.mp4"
+	var inputPath = "/Users/shingle/Desktop/1570593272272801.mp4"
+	var audioPath="/Users/shingle/Desktop/3.mp3"
+	var outputPath = "/Users/shingle/Desktop/testmp4.mp4"
 
 	trans := new(transcoder.Transcoder)
 
-	err := trans.Initialize([]string{inputPath}, outputPath)
+	err := trans.Initialize([]string{inputPath,audioPath}, outputPath)
 	if err != nil {
+		t.Fatal(err)
 		return
+	}
+	trans.MediaFile().SetShortest(true)
+	trans.MediaFile().SetVideoCodec("copy")
+	m:=map[int]string{
+		0:"v:0",
+		1:"a:0",
+	}
+	trans.MediaFile().SetMapIds(m)
+	done := trans.Run(true)
+
+	progress := trans.Output()
+
+		for msg := range progress {
+			log.Println("proc:",msg.Progress)
+		}
+
+	err = <-done
+	if err != nil {
+		t.Fatal(err)
 	}
 }
 
